@@ -194,6 +194,10 @@ const DB = {
         };
       }
 
+      if (card.avatarMin) {
+        stripped.av = card.avatarMin;
+      }
+
       const json = JSON.stringify(stripped);
       return btoa(encodeURIComponent(json));
     } catch (e) {
@@ -224,6 +228,8 @@ const DB = {
         email: compressed.em || '',
         website: compressed.ws || '',
         address: compressed.ad || '',
+        avatar: compressed.av || '',
+        avatarMin: compressed.av || '',
         status: 'active',
         scansCount: 0,
         createdAt: new Date().toISOString(),
@@ -274,6 +280,43 @@ const DB = {
       console.error("Failed to decode card from URL:", e);
       return null;
     }
+  },
+
+  compressImage(base64, maxWidth, maxHeight, quality, callback) {
+    if (!base64) {
+      callback('');
+      return;
+    }
+    const img = new Image();
+    img.src = base64;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+      callback(compressedBase64);
+    };
+    img.onerror = () => {
+      callback(base64); // Fallback to original on error
+    };
   },
 
   getCardsByUserId(userId) {

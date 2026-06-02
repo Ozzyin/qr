@@ -1607,8 +1607,8 @@ input:checked + .status-slider:before {
 }
 
 .qr-popover-preview {
-  width: 160px;
-  height: 160px;
+  width: 260px;
+  height: 260px;
   background: white;
   padding: 10px;
   border-radius: 16px;
