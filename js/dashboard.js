@@ -242,11 +242,12 @@ function initBuilderEngine(user) {
         </div>
       `;
     } else {
+      const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
       livePreviewQR = new QRCodeStyling({
         width: 160,
         height: 160,
         type: "canvas",
-        data: "http://localhost:8000/view.html?id=placeholder",
+        data: window.location.protocol + '//' + window.location.host + dirPath + "view.html?id=placeholder",
         dotsOptions: { color: "#6366f1", type: "rounded" },
         backgroundOptions: { color: "#ffffff" },
         cornersSquareOptions: { type: "rounded", color: "#6366f1" }
@@ -808,8 +809,8 @@ function renderCardsGrid(user, searchQuery = "", typeFilter = "all") {
   // Copy Sharing link
   grid.querySelectorAll('.copy-link-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const cardId = btn.getAttribute('data-id');
-      const shareUrl = `${window.location.origin}/view.html?id=${cardId}`;
+      const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+      const shareUrl = window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}`;
       
       navigator.clipboard.writeText(shareUrl)
         .then(() => {
@@ -851,11 +852,12 @@ function openQRDownloadPopover(userId, cardId) {
   previewDiv.innerHTML = '';
 
   // Render canvas QR
+  const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
   popoverQR = new QRCodeStyling({
     width: 150,
     height: 150,
     type: "canvas",
-    data: `${window.location.origin}/view.html?id=${cardId}`,
+    data: window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}`,
     dotsOptions: {
       color: card.qrStyle?.dotsColor || "#6366f1",
       type: card.qrStyle?.dotsType || "rounded"

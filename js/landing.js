@@ -89,11 +89,12 @@ function initSandboxQR() {
     `;
   } else {
     // Initialize qrCode template from CDN
+    const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
     sandboxQR = new QRCodeStyling({
       width: 98,
       height: 98,
       type: "canvas",
-      data: "http://localhost:8000/view.html?id=crd_sample",
+      data: window.location.protocol + '//' + window.location.host + dirPath + "view.html?id=crd_sample",
       dotsOptions: {
         color: "#6366f1",
         type: "rounded"

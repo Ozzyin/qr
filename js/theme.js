@@ -1,6 +1,16 @@
 // Apstore Dark & Light Mode Theme Controller
 
 (function () {
+  // Enforce trailing slash on directory paths to fix relative path resolution on GitHub Pages
+  const path = window.location.pathname;
+  if (path !== '/' && path !== '') {
+    const lastSegment = path.substring(path.lastIndexOf('/') + 1);
+    if (lastSegment && !lastSegment.includes('.') && !path.endsWith('/')) {
+      window.location.replace(window.location.protocol + '//' + window.location.host + path + '/' + window.location.search + window.location.hash);
+      return;
+    }
+  }
+
   // Retrieve saved theme preference, defaulting to 'dark'
   const savedTheme = localStorage.getItem('apstore-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
