@@ -858,8 +858,8 @@ function openQRDownloadPopover(userId, cardId) {
   const encodedPayload = DB.encodeCardForUrl(card);
   const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
   popoverQR = new QRCodeStyling({
-    width: 150,
-    height: 150,
+    width: 350,
+    height: 350,
     type: "canvas",
     data: window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}&d=${encodedPayload}`,
     dotsOptions: {

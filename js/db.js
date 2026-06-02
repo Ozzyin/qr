@@ -141,27 +141,59 @@ const DB = {
 
   encodeCardForUrl(card) {
     if (!card) return '';
-    // Strip large base64 avatar to keep URL size optimal for QR scannability
-    const stripped = {
-      id: card.id,
-      userId: card.userId,
-      title: card.title,
-      type: card.type,
-      firstName: card.firstName,
-      lastName: card.lastName,
-      jobTitle: card.jobTitle,
-      company: card.company,
-      description: card.description,
-      phone: card.phone,
-      workPhone: card.workPhone,
-      email: card.email,
-      website: card.website,
-      address: card.address,
-      socials: card.socials,
-      theme: card.theme,
-      qrStyle: card.qrStyle
-    };
     try {
+      // Short key mappings for high-efficiency compression
+      const stripped = {
+        id: card.id,
+        ui: card.userId,
+        ti: card.title,
+        ty: card.type,
+        fn: card.firstName,
+        ln: card.lastName,
+        jt: card.jobTitle,
+        co: card.company,
+        ds: card.description,
+        ph: card.phone,
+        wp: card.workPhone,
+        em: card.email,
+        ws: card.website,
+        ad: card.address,
+      };
+
+      if (card.socials) {
+        stripped.so = {};
+        const s = card.socials;
+        if (s.linkedin) stripped.so.li = s.linkedin;
+        if (s.github) stripped.so.gh = s.github;
+        if (s.twitter) stripped.so.tw = s.twitter;
+        if (s.instagram) stripped.so.in = s.instagram;
+        if (s.youtube) stripped.so.yt = s.youtube;
+        if (s.whatsapp) stripped.so.wa = s.whatsapp;
+        if (s.facebook) stripped.so.fb = s.facebook;
+        if (s.tiktok) stripped.so.tk = s.tiktok;
+        if (s.discord) stripped.so.di = s.discord;
+      }
+
+      if (card.theme) {
+        stripped.th = {
+          bg: card.theme.bgColor,
+          pc: card.theme.primaryColor,
+          bs: card.theme.buttonStyle,
+          tm: card.theme.themeMode,
+          pr: card.theme.preset
+        };
+      }
+
+      if (card.qrStyle) {
+        stripped.qs = {
+          dc: card.qrStyle.dotsColor,
+          dt: card.qrStyle.dotsType,
+          cc: card.qrStyle.cornersColor,
+          ct: card.qrStyle.cornersType,
+          lp: card.qrStyle.logoPreset
+        };
+      }
+
       const json = JSON.stringify(stripped);
       return btoa(encodeURIComponent(json));
     } catch (e) {
@@ -174,7 +206,70 @@ const DB = {
     if (!encoded) return null;
     try {
       const json = decodeURIComponent(atob(encoded));
-      return JSON.parse(json);
+      const compressed = JSON.parse(json);
+      
+      // Decompress short keys back to full keys
+      const card = {
+        id: compressed.id,
+        userId: compressed.ui,
+        title: compressed.ti,
+        type: compressed.ty,
+        firstName: compressed.fn || '',
+        lastName: compressed.ln || '',
+        jobTitle: compressed.jt || '',
+        company: compressed.co || '',
+        description: compressed.ds || '',
+        phone: compressed.ph || '',
+        workPhone: compressed.wp || '',
+        email: compressed.em || '',
+        website: compressed.ws || '',
+        address: compressed.ad || '',
+        status: 'active',
+        scansCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      if (compressed.so) {
+        card.socials = {
+          linkedin: compressed.so.li || '',
+          github: compressed.so.gh || '',
+          twitter: compressed.so.tw || '',
+          instagram: compressed.so.in || '',
+          youtube: compressed.so.yt || '',
+          whatsapp: compressed.so.wa || '',
+          facebook: compressed.so.fb || '',
+          tiktok: compressed.so.tk || '',
+          discord: compressed.so.di || ''
+        };
+      } else {
+        card.socials = {
+          linkedin: '', github: '', twitter: '', instagram: '',
+          youtube: '', whatsapp: '', facebook: '', tiktok: '', discord: ''
+        };
+      }
+
+      if (compressed.th) {
+        card.theme = {
+          bgColor: compressed.th.bg || '#6366f1',
+          primaryColor: compressed.th.pc || '#a855f7',
+          buttonStyle: compressed.th.bs || 'pill',
+          themeMode: compressed.th.tm || 'dark',
+          preset: compressed.th.pr || 'custom'
+        };
+      }
+
+      if (compressed.qs) {
+        card.qrStyle = {
+          dotsColor: compressed.qs.dc || '#6366f1',
+          dotsType: compressed.qs.dt || 'rounded',
+          cornersColor: compressed.qs.cc || '#a855f7',
+          cornersType: compressed.qs.ct || 'rounded',
+          logoPreset: compressed.qs.lp || 'vcard'
+        };
+      }
+
+      return card;
     } catch (e) {
       console.error("Failed to decode card from URL:", e);
       return null;
