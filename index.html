@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apstore | Premium QR vCards & Dynamic QRs</title>
+  
+  <!-- Google Fonts & FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- QR Code Styling Library Local -->
+  <script type="text/javascript" src="js/qr-code-styling.js"></script>
+  <!-- Theme Management Script -->
+  <script src="js/theme.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body class="landing-body glow-accent">
+
+  <!-- Header Sticky Navigation -->
+  <header class="navbar-wrapper">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-qrcode"></i></span>
+        <span class="logo-text">Apstore</span>
+      </a>
+      
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#demo">Interactive Demo</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+
+      <div class="nav-actions" style="display: flex; gap: 12px; align-items: center;">
+        <button class="theme-toggle-btn" id="btn-theme-toggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <div class="nav-actions-auth" id="auth-header-actions" style="display: flex; gap: 12px; align-items: center;">
+          <!-- Replaced dynamically by auth state in JS -->
+          <button class="btn btn-secondary btn-nav-login" id="btn-show-login">Sign In</button>
+          <button class="btn btn-primary btn-nav-signup" id="btn-show-signup">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section & Live Sandbox Creator -->
+  <main class="hero-section" id="home">
+    <div class="hero-container">
+      
+      <!-- Marketing Copy -->
+      <div class="hero-copy">
+        <div class="badge badge-pro" style="margin-bottom: 16px; font-size: 0.72rem;">
+          <i class="fa-solid fa-sparkles"></i> The Next Gen Digital Contact Card
+        </div>
+        <h1 class="hero-title">Create Premium <span class="text-gradient">vCard QR Codes</span> in Seconds.</h1>
+        <p class="hero-subtitle">
+          Instantly share your contact details, social profiles, and company cards using fully customizable, highly scannable, dynamic QR codes. Track scans with advanced real-time analytics.
+        </p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn btn-primary btn-lg">Create Your Card <i class="fa-solid fa-arrow-down"></i></a>
+          <a href="#pricing" class="btn btn-secondary btn-lg">View Tiers</a>
+        </div>
+        <div class="hero-social-proof">
+          <div class="avatars-group">
+            <span class="profile-pic-proof" style="background-color: #6366f1;">A</span>
+            <span class="profile-pic-proof" style="background-color: #a855f7;">B</span>
+            <span class="profile-pic-proof" style="background-color: #10b981;">C</span>
+          </div>
+          <span>Trusted by 45,000+ engineers, designers, and scaling sales leaders worldwide.</span>
+        </div>
+      </div>
+
+      <!-- Live Mobile Mockup Sandbox -->
+      <div class="hero-sandbox glass-card" id="demo">
+        <div class="sandbox-header">
+          <h3>Try the Live Card Sandbox</h3>
+          <p>Type below to see changes in real-time!</p>
+        </div>
+        
+        <div class="sandbox-grid">
+          <!-- Mini customizer form -->
+          <div class="sandbox-form">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="sb-name" value="Nikhil Sunil" placeholder="e.g. Nikhil Sunil">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Job Title</label>
+              <input type="text" class="form-control" id="sb-title" value="Lead Digital Designer" placeholder="e.g. Lead Digital Designer">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Company</label>
+              <input type="text" class="form-control" id="sb-company" value="Apstore Inc." placeholder="e.g. Apstore Inc.">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Theme color</label>
+              <div class="color-picker-group">
+                <input type="color" id="sb-color" value="#6366f1" class="color-dot-picker">
+                <span id="sb-color-hex" class="hex-text">#6366f1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Area -->
+          <div class="sandbox-previews">
+            <!-- Simulated Mobile Screen -->
+            <div class="sandbox-mobile-frame">
+              <div class="mobile-top-bar">
+                <span class="time">9:41</span>
+                <div class="icons"><i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></div>
+              </div>
+              <div class="mobile-card-content" id="sb-mobile-card">
+                <div class="mobile-avatar" id="sb-mobile-avatar" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);">NS</div>
+                <div class="mobile-name" id="sb-mobile-name">Nikhil Sunil</div>
+                <div class="mobile-title" id="sb-mobile-title">Lead Digital Designer</div>
+                <div class="mobile-comp" id="sb-mobile-company">Apstore Inc.</div>
+                
+                <div class="mobile-mock-buttons">
+                  <div class="mock-btn"><i class="fa-solid fa-phone"></i></div>
+                  <div class="mock-btn"><i class="fa-solid fa-envelope"></i></div>
+                  <div class="mock-btn"><i class="fa-solid fa-globe"></i></div>
+                </div>
+                
+                <div class="mobile-mock-vcf-btn" id="sb-mobile-vcf-btn">Save to Contacts</div>
+              </div>
+            </div>
+
+            <!-- Resulting live QR Code wrapper -->
+            <div class="sandbox-qr-frame">
+              <div class="qr-container" id="sb-qr-code">
+                <!-- Loaded by qr-code-styling -->
+              </div>
+              <span class="qr-scan-instruction"><i class="fa-solid fa-camera"></i> Scan with your phone!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bento Features Section -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <h2 class="section-title-big">Stunning Platform <span class="text-gradient">Features</span></h2>
+      <p class="section-subtitle-big">Apstore gives you enterprise tools to publish, customize, and optimize your business cards.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature Card 1 -->
+      <div class="feature-card glass-card">
+        <div class="feature-icon" style="color: #6366f1;"><i class="fa-solid fa-rotate"></i></div>
+        <h3>Dynamic Redirects</h3>
+        <p>Change your contact number, bio, address, or social handles at any time. The QR code stays exactly the same, bypassing printing and reprint costs.</p>
+      </div>
+
+      <!-- Feature Card 2 -->
+      <div class="feature-card glass-card">
+        <div class="feature-icon" style="color: #a855f7;"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Advanced Analytics</h3>
+        <p>Real-time reports detailing exact scan frequencies, mobile device platforms (iOS, Android, Windows, Mac), referrers, and geo-locations of scanners.</p>
+      </div>
+
+      <!-- Feature Card 3 -->
+      <div class="feature-card glass-card">
+        <div class="feature-icon" style="color: #10b981;"><i class="fa-solid fa-sliders"></i></div>
+        <h3>Rich QR Customization</h3>
+        <p>Break away from plain black QRs. Mix gorgeous radial gradients, customize dots styles, corner eyes styles, and easily embed custom center branding logos.</p>
+      </div>
+
+      <!-- Feature Card 4 -->
+      <div class="feature-card glass-card">
+        <div class="feature-icon" style="color: #f59e0b;"><i class="fa-solid fa-address-book"></i></div>
+        <h3>Direct Contact Saving</h3>
+        <p>Mobile scanners don't have to copy-paste. Clicking "Save to Contacts" automatically generates a standard `.vcf` card downloading straight to their device.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Plans Section -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-header">
+      <h2 class="section-title-big">Transparent <span class="text-gradient">Pricing Plans</span></h2>
+      <p class="section-subtitle-big">Unlock custom branding, analytical tracking charts, and dynamic QR redirections today.</p>
+      
+      <!-- Billing Cycle Toggle -->
+      <div class="billing-toggle-container">
+        <span class="toggle-label active" id="cycle-monthly">Monthly</span>
+        <button class="cycle-switch-btn" id="btn-toggle-cycle">
+          <span class="switch-dot"></span>
+        </button>
+        <span class="toggle-label" id="cycle-yearly">Yearly <span class="discount-pill">Save 20%</span></span>
+      </div>
+    </div>
+
+    <!-- Pricing cards grid -->
+    <div class="pricing-grid">
+      <!-- Tier 1: Free -->
+      <div class="pricing-card glass-card">
+        <span class="tier-badge">Starter</span>
+        <h3 class="tier-name">Free Tier</h3>
+        <div class="price-box">
+          <span class="currency">$</span>
+          <span class="amount" id="price-free">0</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="tier-desc">Test out core contact cards and static creations.</p>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-circle-check"></i> Max 2 digital cards</li>
+          <li><i class="fa-solid fa-circle-check"></i> Static QR generation</li>
+          <li><i class="fa-solid fa-circle-check"></i> Standard styling setups</li>
+          <li class="muted"><i class="fa-solid fa-circle-xmark"></i> Advanced dynamic links</li>
+          <li class="muted"><i class="fa-solid fa-circle-xmark"></i> Scan analytics charts</li>
+          <li class="muted"><i class="fa-solid fa-circle-xmark"></i> Custom branding (Includes Apstore tag)</li>
+        </ul>
+        <button class="btn btn-secondary btn-pricing-select" data-tier="free">Select Free</button>
+      </div>
+
+      <!-- Tier 2: Pro -->
+      <div class="pricing-card glass-card popular">
+        <div class="popular-ribbon"><i class="fa-solid fa-fire"></i> Most Popular</div>
+        <span class="tier-badge">Professional</span>
+        <h3 class="tier-name">Pro Plan</h3>
+        <div class="price-box">
+          <span class="currency">$</span>
+          <span class="amount" id="price-pro">9</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="tier-desc">Unlock advanced tools and scannable tracking.</p>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-circle-check"></i> **Max 10 digital cards**</li>
+          <li><i class="fa-solid fa-circle-check"></i> **Dynamic QR redirection**</li>
+          <li><i class="fa-solid fa-circle-check"></i> Gradient card color systems</li>
+          <li><i class="fa-solid fa-circle-check"></i> Custom QR styles (gradient dots, eyes)</li>
+          <li><i class="fa-solid fa-circle-check"></i> Advanced scan analytics</li>
+          <li><i class="fa-solid fa-circle-check"></i> **No Apstore branding**</li>
+        </ul>
+        <button class="btn btn-primary btn-pricing-select" data-tier="pro">Upgrade to Pro</button>
+      </div>
+
+      <!-- Tier 3: Enterprise -->
+      <div class="pricing-card glass-card">
+        <span class="tier-badge">Business</span>
+        <h3 class="tier-name">Enterprise</h3>
+        <div class="price-box">
+          <span class="currency">$</span>
+          <span class="amount" id="price-enterprise">29</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="tier-desc">Fully scaling suites for corporations and larger teams.</p>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-circle-check"></i> **Unlimited digital cards**</li>
+          <li><i class="fa-solid fa-circle-check"></i> Dynamic QR codes</li>
+          <li><i class="fa-solid fa-circle-check"></i> Priority API setups & CSV imports</li>
+          <li><i class="fa-solid fa-circle-check"></i> Enterprise templates</li>
+          <li><i class="fa-solid fa-circle-check"></i> Dedicated account support</li>
+          <li><i class="fa-solid fa-circle-check"></i> **Custom Domain mapping**</li>
+        </ul>
+        <button class="btn btn-secondary btn-pricing-select" data-tier="enterprise">Get Enterprise</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Auth Modal Overlay -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal-card glass-card">
+      <button class="btn-modal-close" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- Modal Tabs toggling login/signup -->
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tab-login">Sign In</button>
+        <button class="auth-tab-btn" id="tab-signup">Register</button>
+      </div>
+
+      <!-- Form: Login -->
+      <form class="auth-form active" id="form-login">
+        <h3 class="form-title-text">Welcome Back</h3>
+        <p class="form-sub-text">Enter credentials to view your dashboards.</p>
+        
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="login-email" required placeholder="demo@apstore.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="login-password" required placeholder="demo123">
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-full" style="margin-top: 10px; width: 100%;">
+          Access Console <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+        <p class="auth-switch-tip">Don't have an account? <span id="switch-to-register">Register here</span></p>
+      </form>
+
+      <!-- Form: Signup -->
+      <form class="auth-form" id="form-signup">
+        <h3 class="form-title-text">Create Account</h3>
+        <p class="form-sub-text">Build digital vCards and track interactive QRs.</p>
+        
+        <input type="hidden" id="signup-subscription" value="free">
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="signup-name" required placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="signup-email" required placeholder="name@domain.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="signup-password" required placeholder="Min 6 characters">
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-full" style="margin-top: 10px; width: 100%;">
+          Register Account <i class="fa-solid fa-user-plus"></i>
+        </button>
+        <p class="auth-switch-tip">Already registered? <span id="switch-to-login">Sign In here</span></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main System Toast alert notification -->
+  <div class="toast-container" id="toast-bin"></div>
+
+  <!-- DB and Auth Core scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  
+  <!-- UI Interactions script -->
+  <script src="js/landing.js"></script>
+</body>
+</html>

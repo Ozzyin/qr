@@ -1,0 +1,721 @@
+/* Apstore Premium Mobile vCard Stylesheet */
+
+.vcard-body {
+  background-color: #05070f;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Background Glow Orbs */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.25;
+  z-index: 0;
+  pointer-events: none;
+  transition: var(--transition-smooth);
+}
+
+.orb-1 {
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: var(--accent-primary);
+}
+
+.orb-2 {
+  bottom: 10%;
+  left: -100px;
+  width: 250px;
+  height: 250px;
+  background: var(--accent-secondary);
+}
+
+/* Main Container: Mobile phone mockup centering */
+.vcard-container {
+  width: 100%;
+  max-width: 450px;
+  min-height: 100vh;
+  background: rgba(10, 14, 35, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+  padding: 32px 24px 100px 24px; /* extra space at bottom for floating button */
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Header: Avatar, Name, and Corporate details */
+.vcard-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.avatar-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3), var(--shadow-inset);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.avatar-wrapper:hover {
+  transform: scale(1.05) rotate(3deg);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--bg-darker);
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg-darker);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.vcard-name {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.vcard-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.vcard-company {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(168, 85, 247, 0.1);
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+/* Sections Structure */
+.vcard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+/* Bio Statement Styling */
+.vcard-bio-section {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+}
+
+.vcard-bio {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Quick Action Contact Grid */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  color: var(--text-primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #818cf8;
+  transition: var(--transition-smooth);
+}
+
+.action-btn:hover .icon-box {
+  background: var(--grad-accent);
+  color: var(--text-inverse);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  transform: scale(1.05);
+}
+
+.action-btn span {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Address Map Block */
+.location-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  color: var(--text-primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.location-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+.location-card i {
+  font-size: 1.4rem;
+  color: var(--accent-secondary);
+}
+
+.location-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.location-title {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.location-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.arrow {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+}
+
+.location-card:hover .arrow {
+  transform: translateX(4px);
+  color: var(--text-primary);
+}
+
+/* Social Connections list */
+.socials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  color: var(--text-primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.social-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.social-icon-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  transition: var(--transition-smooth);
+}
+
+.social-item:hover .social-icon-wrapper {
+  background: var(--text-inverse);
+  transform: rotate(5deg);
+}
+
+/* Social Provider Colors on hover */
+.social-item.linkedin:hover .social-icon-wrapper { color: #0077b5; }
+.social-item.github:hover .social-icon-wrapper { color: #24292e; }
+.social-item.twitter:hover .social-icon-wrapper { color: #1da1f2; }
+.social-item.instagram:hover .social-icon-wrapper { color: #e1306c; }
+.social-item.youtube:hover .social-icon-wrapper { color: #ff0000; }
+.social-item.whatsapp:hover .social-icon-wrapper { color: #25d366; }
+.social-item.facebook:hover .social-icon-wrapper { color: #1877f2; }
+.social-item.tiktok:hover .social-icon-wrapper { color: #010101; }
+.social-item.discord:hover .social-icon-wrapper { color: #5865f2; }
+
+.social-info {
+  flex-grow: 1;
+}
+
+.social-name {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.social-handle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Floating contact actions exporter bar */
+.floating-save-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px 24px 24px;
+  background: linear-gradient(to top, rgba(5, 7, 15, 0.95) 75%, rgba(5, 7, 15, 0) 100%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.btn-save-contact {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  border-radius: 14px;
+}
+
+/* Brand footer */
+.vcard-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  padding-bottom: 24px;
+}
+
+.branding-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: var(--transition-smooth);
+}
+
+.branding-link:hover {
+  opacity: 1;
+}
+
+.branding-link .brand-text {
+  font-weight: 700;
+  background: var(--grad-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.02em;
+}
+
+/* Custom visual styles depending on user templates */
+
+/* Dynamic Button Overrides */
+.vcard-container.btn-square .action-btn, 
+.vcard-container.btn-square .location-card, 
+.vcard-container.btn-square .social-item, 
+.vcard-container.btn-square .btn-save-contact {
+  border-radius: 4px !important;
+}
+
+.vcard-container.btn-square .icon-box,
+.vcard-container.btn-square .social-icon-wrapper {
+  border-radius: 4px !important;
+}
+
+.vcard-container.btn-rounded .action-btn, 
+.vcard-container.btn-rounded .location-card, 
+.vcard-container.btn-rounded .social-item, 
+.vcard-container.btn-rounded .btn-save-contact {
+  border-radius: 12px !important;
+}
+
+.vcard-container.btn-rounded .icon-box,
+.vcard-container.btn-rounded .social-icon-wrapper {
+  border-radius: 8px !important;
+}
+
+.vcard-container.btn-pill .action-btn, 
+.vcard-container.btn-pill .location-card, 
+.vcard-container.btn-pill .social-item {
+  border-radius: 20px !important;
+}
+.vcard-container.btn-pill .btn-save-contact {
+  border-radius: 9999px !important;
+}
+
+.vcard-container.btn-pill .icon-box,
+.vcard-container.btn-pill .social-icon-wrapper {
+  border-radius: 12px !important;
+}
+
+/* --- LIGHT MODE PORTFOLIO OVERRIDES --- */
+.vcard-container.theme-light {
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.vcard-container.theme-light .vcard-name {
+  color: #0f172a !important;
+}
+
+.vcard-container.theme-light .vcard-title {
+  color: #475569 !important;
+}
+
+.vcard-container.theme-light .vcard-bio-section {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.vcard-container.theme-light .vcard-bio {
+  color: #334155 !important;
+}
+
+.vcard-container.theme-light .section-title {
+  color: #64748b !important;
+}
+
+.vcard-container.theme-light .action-btn,
+.vcard-container.theme-light .location-card,
+.vcard-container.theme-light .social-item {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.04) !important;
+  color: #1e293b !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+.vcard-container.theme-light .action-btn:hover,
+.vcard-container.theme-light .location-card:hover,
+.vcard-container.theme-light .social-item:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.vcard-container.theme-light .icon-box {
+  background: rgba(99, 102, 241, 0.06) !important;
+  color: #4f46e5 !important;
+}
+
+.vcard-container.theme-light .social-icon-wrapper {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.vcard-container.theme-light .social-handle {
+  color: #64748b !important;
+}
+
+.vcard-container.theme-light .floating-save-container {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 75%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+.vcard-container.theme-light .location-text {
+  color: #334155 !important;
+}
+
+/* Toast alert notification */
+.vcard-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translate(-50%, 50px);
+  background: rgba(16, 185, 129, 0.95);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.vcard-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* ==========================================================================
+   Apstore Premium Design Templates Presets Overrides
+   ========================================================================== */
+
+/* 🌅 Sunset Glassmorphic Template Preset */
+.tpl-glass-sunset {
+  background: linear-gradient(135deg, rgba(255, 126, 95, 0.45) 0%, rgba(254, 180, 123, 0.45) 100%) !important;
+  font-family: 'Outfit', sans-serif !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+.tpl-glass-sunset .live-avatar-wrapper, .tpl-glass-sunset .avatar-wrapper {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%) !important;
+  box-shadow: 0 8px 32px rgba(255, 126, 95, 0.4) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+.tpl-glass-sunset .live-btn, .tpl-glass-sunset .action-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+}
+.tpl-glass-sunset .live-btn:hover, .tpl-glass-sunset .action-btn:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+.tpl-glass-sunset .live-save-btn, .tpl-glass-sunset .btn-save-contact {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 20px rgba(255, 126, 95, 0.45) !important;
+}
+
+/* ⚡ Cyberpunk Neon Glow Template Preset */
+.tpl-neo-glow {
+  background: #060212 !important;
+  border-left: 2px solid #ff007f !important;
+  border-right: 2px solid #ff007f !important;
+  box-shadow: 0 0 40px rgba(255, 0, 127, 0.3) !important;
+}
+.tpl-neo-glow .live-avatar-wrapper, .tpl-neo-glow .avatar-wrapper {
+  background: #060212 !important;
+  border: 2px solid #00f0ff !important;
+  box-shadow: 0 0 15px #00f0ff !important;
+}
+.tpl-neo-glow .live-name-text, .tpl-neo-glow .vcard-name {
+  color: #00f0ff !important;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.7) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 800 !important;
+}
+.tpl-neo-glow .live-title-text, .tpl-neo-glow .vcard-title {
+  color: #ff007f !important;
+  font-weight: 600 !important;
+}
+.tpl-neo-glow .live-btn, .tpl-neo-glow .action-btn {
+  background: rgba(12, 5, 30, 0.8) !important;
+  border: 1px solid #ff007f !important;
+  color: #ff007f !important;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.2) !important;
+}
+.tpl-neo-glow .live-btn:hover, .tpl-neo-glow .action-btn:hover {
+  background: #ff007f !important;
+  color: #fff !important;
+  box-shadow: 0 0 15px #ff007f !important;
+}
+.tpl-neo-glow .live-save-btn, .tpl-neo-glow .btn-save-contact {
+  background: linear-gradient(90deg, #ff007f 0%, #7b00ff 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.6) !important;
+}
+
+/* 👔 Royal Executive Gold Template Preset */
+.tpl-executive {
+  background: linear-gradient(135deg, #111111 0%, #1e1e1e 100%) !important;
+  border-left: 1px solid #d4af37 !important;
+  border-right: 1px solid #d4af37 !important;
+}
+.tpl-executive .live-avatar-wrapper, .tpl-executive .avatar-wrapper {
+  background: #111111 !important;
+  border: 2px solid #d4af37 !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35) !important;
+}
+.tpl-executive .live-name-text, .tpl-executive .vcard-name {
+  color: #d4af37 !important;
+  letter-spacing: 0.05em;
+}
+.tpl-executive .live-comp-badge, .tpl-executive .vcard-company {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: #d4af37 !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+.tpl-executive .live-btn, .tpl-executive .action-btn {
+  background: transparent !important;
+  border: 1px solid #d4af37 !important;
+  color: #d4af37 !important;
+}
+.tpl-executive .live-btn:hover, .tpl-executive .action-btn:hover {
+  background: #d4af37 !important;
+  color: #111111 !important;
+}
+.tpl-executive .live-save-btn, .tpl-executive .btn-save-contact {
+  background: #d4af37 !important;
+  color: #111111 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4) !important;
+}
+
+/* 🌿 Emerald Forest Eco Template Preset */
+.tpl-emerald-eco {
+  background: linear-gradient(135deg, #092518 0%, #0d3b24 100%) !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+.tpl-emerald-eco .live-avatar-wrapper, .tpl-emerald-eco .avatar-wrapper {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
+}
+.tpl-emerald-eco .live-comp-badge, .tpl-emerald-eco .vcard-company {
+  color: #a7f3d0 !important;
+}
+.tpl-emerald-eco .live-btn, .tpl-emerald-eco .action-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #a7f3d0 !important;
+}
+.tpl-emerald-eco .live-btn:hover, .tpl-emerald-eco .action-btn:hover {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+.tpl-emerald-eco .live-save-btn, .tpl-emerald-eco .btn-save-contact {
+  background: #10b981 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* ⚪ Minimal Stark Slate Template Preset */
+.tpl-minimalist {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border-left: 1px solid #e2e8f0 !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+.tpl-minimalist .live-name-text, .tpl-minimalist .vcard-name {
+  color: #0f172a !important;
+}
+.tpl-minimalist .live-title-text, .tpl-minimalist .vcard-title, .tpl-minimalist .live-bio-box, .tpl-minimalist .vcard-bio {
+  color: #475569 !important;
+}
+.tpl-minimalist .live-avatar-wrapper, .tpl-minimalist .avatar-wrapper {
+  background: #f8fafc !important;
+  border: 2px solid #0f172a !important;
+  box-shadow: none !important;
+}
+.tpl-minimalist .live-comp-badge, .tpl-minimalist .vcard-company {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+.tpl-minimalist .live-btn, .tpl-minimalist .action-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+.tpl-minimalist .live-btn:hover, .tpl-minimalist .action-btn:hover {
+  background: #cbd5e1 !important;
+}
+.tpl-minimalist .live-save-btn, .tpl-minimalist .btn-save-contact {
+  background: #0f172a !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+}
+
