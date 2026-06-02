@@ -199,7 +199,8 @@ const DB = {
       }
 
       const json = JSON.stringify(stripped);
-      return btoa(encodeURIComponent(json));
+      const base64 = btoa(encodeURIComponent(json));
+      return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     } catch (e) {
       console.error("Failed to encode card for URL:", e);
       return '';
@@ -209,7 +210,11 @@ const DB = {
   decodeCardFromUrl(encoded) {
     if (!encoded) return null;
     try {
-      const json = decodeURIComponent(atob(encoded));
+      let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      const json = decodeURIComponent(atob(base64));
       const compressed = JSON.parse(json);
       
       // Decompress short keys back to full keys
@@ -356,6 +361,7 @@ const DB = {
       website: cardData.website || '',
       address: cardData.address || '',
       avatar: cardData.avatar || '', // base64 representation
+      avatarMin: cardData.avatarMin || '', // low-res thumbnail
       socials: {
         linkedin: cardData.socials?.linkedin || '',
         github: cardData.socials?.github || '',
@@ -425,6 +431,7 @@ const DB = {
       website: cardData.website !== undefined ? cardData.website : card.website,
       address: cardData.address !== undefined ? cardData.address : card.address,
       avatar: cardData.avatar !== undefined ? cardData.avatar : card.avatar,
+      avatarMin: cardData.avatarMin !== undefined ? cardData.avatarMin : card.avatarMin,
       socials: {
         ...card.socials,
         ...cardData.socials

@@ -7,7 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentUser = Auth.getCurrentUser();
   if (!currentUser) return; // guardRoute handles redirects
 
-  // 2. Initialize application frameworks
+  // 2. Backfill avatarMin silently for any existing cards missing it
+  const cards = DB.getCardsByUserId(currentUser.id);
+  cards.forEach(card => {
+    if (card.avatar && !card.avatarMin) {
+      DB.compressImage(card.avatar, 40, 40, 0.4, (minAvatar) => {
+        card.avatarMin = minAvatar;
+        DB.updateCard(currentUser.id, card.id, card);
+      });
+    }
+  });
+
+  // 3. Initialize application frameworks
   initDashboardUI(currentUser);
   initBuilderEngine(currentUser);
   initCardsStorage(currentUser);
@@ -15,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBillingAndCheckout(currentUser);
   initSettings(currentUser);
 
-  // 3. Process URL routing checks
+  // 4. Process URL routing checks
   handleUrlRouting();
 });
 
