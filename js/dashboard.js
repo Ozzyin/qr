@@ -7,18 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentUser = Auth.getCurrentUser();
   if (!currentUser) return; // guardRoute handles redirects
 
-  // 2. Backfill avatarMin silently for any existing cards missing it
-  const cards = DB.getCardsByUserId(currentUser.id);
-  cards.forEach(card => {
-    if (card.avatar && !card.avatarMin) {
-      DB.compressImage(card.avatar, 40, 40, 0.4, (minAvatar) => {
-        card.avatarMin = minAvatar;
-        DB.updateCard(currentUser.id, card.id, card);
-      });
-    }
-  });
-
-  // 3. Initialize application frameworks
+  // 2. Initialize application frameworks
   initDashboardUI(currentUser);
   initBuilderEngine(currentUser);
   initCardsStorage(currentUser);
@@ -26,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBillingAndCheckout(currentUser);
   initSettings(currentUser);
 
-  // 4. Process URL routing checks
+  // 3. Process URL routing checks
   handleUrlRouting();
 });
 
@@ -299,21 +288,13 @@ function initBuilderEngine(user) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const base64String = event.target.result;
+        avatarBase64.value = base64String;
         
-        // 1. Compress main profile picture (180x180px for desktop cache)
-        DB.compressImage(base64String, 180, 180, 0.75, (mainAvatar) => {
-          avatarBase64.value = mainAvatar;
-          
-          // Update live phone preview mockup
-          const liveAvatar = document.getElementById('live-avatar-box');
-          liveAvatar.innerHTML = `<img src="${mainAvatar}" alt="avatar" class="live-avatar-image">`;
-          
-          // 2. Compress highly lightweight thumbnail (40x40px for mobile QR URL sync)
-          DB.compressImage(mainAvatar, 40, 40, 0.4, (minAvatar) => {
-            document.getElementById('card-avatar-min-base64').value = minAvatar;
-            showDashboardToast("Avatar photo optimized and synchronized successfully.");
-          });
-        });
+        // Update live phone avatar
+        const liveAvatar = document.getElementById('live-avatar-box');
+        liveAvatar.innerHTML = `<img src="${base64String}" alt="avatar" class="live-avatar-image">`;
+        
+        showDashboardToast("Avatar photo uploaded successfully.");
       };
       reader.readAsDataURL(file);
     }
@@ -410,7 +391,6 @@ function initBuilderEngine(user) {
       website: document.getElementById('vc-website').value.trim(),
       address: document.getElementById('vc-address').value.trim(),
       avatar: avatarBase64.value,
-      avatarMin: document.getElementById('card-avatar-min-base64').value || "",
       socials: {
         linkedin: document.getElementById('vc-soc-linkedin').value.trim(),
         github: document.getElementById('vc-soc-github').value.trim(),
@@ -476,7 +456,6 @@ function resetBuilderForm() {
   document.getElementById('builder-editor-title').textContent = "Create Premium QR vCard";
   document.getElementById('edit-card-id').value = "";
   document.getElementById('card-avatar-base64').value = "";
-  document.getElementById('card-avatar-min-base64').value = "";
   document.getElementById('lbl-file-name').textContent = "No file selected";
 
   // Re-sync hex labels
@@ -614,7 +593,6 @@ function editCardProfile(userId, cardId) {
   document.getElementById('builder-editor-title').textContent = "Edit Digital vCard Profile";
   document.getElementById('edit-card-id').value = cardId;
   document.getElementById('card-avatar-base64').value = card.avatar || "";
-  document.getElementById('card-avatar-min-base64').value = card.avatarMin || "";
 
   document.getElementById('vc-title').value = card.title;
   document.getElementById('vc-type').value = card.type;

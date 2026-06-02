@@ -194,10 +194,6 @@ const DB = {
         };
       }
 
-      if (card.avatarMin) {
-        stripped.av = card.avatarMin;
-      }
-
       const json = JSON.stringify(stripped);
       const base64 = btoa(encodeURIComponent(json));
       return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -233,8 +229,8 @@ const DB = {
         email: compressed.em || '',
         website: compressed.ws || '',
         address: compressed.ad || '',
-        avatar: compressed.av || '',
-        avatarMin: compressed.av || '',
+        avatar: '',
+        avatarMin: '',
         status: 'active',
         scansCount: 0,
         createdAt: new Date().toISOString(),
@@ -287,42 +283,7 @@ const DB = {
     }
   },
 
-  compressImage(base64, maxWidth, maxHeight, quality, callback) {
-    if (!base64) {
-      callback('');
-      return;
-    }
-    const img = new Image();
-    img.src = base64;
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      let width = img.width;
-      let height = img.height;
 
-      if (width > height) {
-        if (width > maxWidth) {
-          height *= maxWidth / width;
-          width = maxWidth;
-        }
-      } else {
-        if (height > maxHeight) {
-          width *= maxHeight / height;
-          height = maxHeight;
-        }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-      
-      const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-      callback(compressedBase64);
-    };
-    img.onerror = () => {
-      callback(base64); // Fallback to original on error
-    };
-  },
 
   getCardsByUserId(userId) {
     return this.getCards().filter(c => c.userId === userId);
@@ -361,7 +322,6 @@ const DB = {
       website: cardData.website || '',
       address: cardData.address || '',
       avatar: cardData.avatar || '', // base64 representation
-      avatarMin: cardData.avatarMin || '', // low-res thumbnail
       socials: {
         linkedin: cardData.socials?.linkedin || '',
         github: cardData.socials?.github || '',
@@ -431,7 +391,6 @@ const DB = {
       website: cardData.website !== undefined ? cardData.website : card.website,
       address: cardData.address !== undefined ? cardData.address : card.address,
       avatar: cardData.avatar !== undefined ? cardData.avatar : card.avatar,
-      avatarMin: cardData.avatarMin !== undefined ? cardData.avatarMin : card.avatarMin,
       socials: {
         ...card.socials,
         ...cardData.socials
