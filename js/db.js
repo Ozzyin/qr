@@ -194,6 +194,10 @@ const DB = {
         };
       }
 
+      if (card.avatarMin) {
+        stripped.av = card.avatarMin;
+      }
+
       const json = JSON.stringify(stripped);
       const base64 = btoa(encodeURIComponent(json));
       return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -229,8 +233,8 @@ const DB = {
         email: compressed.em || '',
         website: compressed.ws || '',
         address: compressed.ad || '',
-        avatar: '',
-        avatarMin: '',
+        avatar: compressed.av || '',
+        avatarMin: compressed.av || '',
         status: 'active',
         scansCount: 0,
         createdAt: new Date().toISOString(),
@@ -283,6 +287,61 @@ const DB = {
     }
   },
 
+  compressImage(base64, maxWidth, maxHeight, quality, toGrayscale, callback) {
+    if (!base64) {
+      callback('');
+      return;
+    }
+    const img = new Image();
+    img.src = base64;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      // Maintain aspect ratio
+      if (width > height) {
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Grayscale compression for massive URL-size reduction and artistic headshots
+      if (toGrayscale) {
+        try {
+          const imgData = ctx.getImageData(0, 0, width, height);
+          const data = imgData.data;
+          for (let i = 0; i < data.length; i += 4) {
+            const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+            data[i] = gray;     // R
+            data[i + 1] = gray; // G
+            data[i + 2] = gray; // B
+          }
+          ctx.putImageData(imgData, 0, 0);
+        } catch (e) {
+          console.warn("Grayscale filtering failed (CORS), skipping filter:", e);
+        }
+      }
+      
+      const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+      callback(compressedBase64);
+    };
+    img.onerror = () => {
+      callback(base64);
+    };
+  },
+
 
 
   getCardsByUserId(userId) {
@@ -322,6 +381,7 @@ const DB = {
       website: cardData.website || '',
       address: cardData.address || '',
       avatar: cardData.avatar || '', // base64 representation
+      avatarMin: cardData.avatarMin || '', // low-res thumbnail
       socials: {
         linkedin: cardData.socials?.linkedin || '',
         github: cardData.socials?.github || '',
@@ -391,6 +451,7 @@ const DB = {
       website: cardData.website !== undefined ? cardData.website : card.website,
       address: cardData.address !== undefined ? cardData.address : card.address,
       avatar: cardData.avatar !== undefined ? cardData.avatar : card.avatar,
+      avatarMin: cardData.avatarMin !== undefined ? cardData.avatarMin : card.avatarMin,
       socials: {
         ...card.socials,
         ...cardData.socials
