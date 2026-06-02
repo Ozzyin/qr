@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentUser = Auth.getCurrentUser();
   if (!currentUser) return; // guardRoute handles redirects
 
-  // 2. Backfill avatarMin silently (120x120px Grayscale) for any existing cards missing it
+  // 2. Backfill avatarMin silently (90x90px Grayscale) for any existing cards missing it
   const cards = DB.getCardsByUserId(currentUser.id);
   cards.forEach(card => {
     if (card.avatar && !card.avatarMin) {
-      DB.compressImage(card.avatar, 120, 120, 0.35, true, (minAvatar) => {
+      DB.compressImage(card.avatar, 90, 90, 0.25, true, (minAvatar) => {
         card.avatarMin = minAvatar;
         DB.updateCard(currentUser.id, card.id, card);
       });
@@ -308,8 +308,8 @@ function initBuilderEngine(user) {
           const liveAvatar = document.getElementById('live-avatar-box');
           liveAvatar.innerHTML = `<img src="${mainAvatar}" alt="avatar" class="live-avatar-image">`;
           
-          // 2. Compress highly lightweight thumbnail (120x120px Grayscale for mobile QR URL sync)
-          DB.compressImage(mainAvatar, 120, 120, 0.35, true, (minAvatar) => {
+          // 2. Compress highly lightweight thumbnail (90x90px Grayscale for mobile QR URL sync)
+          DB.compressImage(mainAvatar, 90, 90, 0.25, true, (minAvatar) => {
             document.getElementById('card-avatar-min-base64').value = minAvatar;
             showDashboardToast("Avatar photo optimized and synchronized successfully.");
           });
@@ -879,7 +879,16 @@ function openQRDownloadPopover(userId, cardId) {
   // Render canvas QR
   const encodedPayload = DB.encodeCardForUrl(card);
   const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-  popoverQR = new QRCodeStyling({
+  
+  // Resolve center image and options natively in constructor
+  let qrImage = "";
+  if (card.qrStyle?.logoPreset === 'vcard') {
+    qrImage = vcardLogoBase64;
+  } else if (card.qrStyle?.logoPreset === 'avatar' && card.avatar) {
+    qrImage = card.avatar;
+  }
+
+  const qrOptions = {
     width: 350,
     height: 350,
     type: "canvas",
@@ -899,19 +908,14 @@ function openQRDownloadPopover(userId, cardId) {
       color: card.qrStyle?.cornersColor || "#a855f7",
       type: card.qrStyle?.cornersType === 'dot' ? 'dot' : 'square'
     }
-  });
+  };
 
-  if (card.qrStyle?.logoPreset === 'vcard') {
-    popoverQR.update({
-      image: vcardLogoBase64,
-      imageOptions: { hideBackgroundDots: true, imageSize: 0.35, margin: 4 }
-    });
-  } else if (card.qrStyle?.logoPreset === 'avatar' && card.avatar) {
-    popoverQR.update({
-      image: card.avatar,
-      imageOptions: { hideBackgroundDots: true, imageSize: 0.35, margin: 4 }
-    });
+  if (qrImage) {
+    qrOptions.image = qrImage;
+    qrOptions.imageOptions = { hideBackgroundDots: true, imageSize: 0.35, margin: 4 };
   }
+
+  popoverQR = new QRCodeStyling(qrOptions);
 
   // Draw
   popoverQR.append(previewDiv);

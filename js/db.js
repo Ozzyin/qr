@@ -196,6 +196,8 @@ const DB = {
 
       if (card.avatarMin) {
         stripped.av = card.avatarMin;
+      } else if (card.avatar) {
+        stripped.av = card.avatar;
       }
 
       const json = JSON.stringify(stripped);
