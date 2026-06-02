@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apstore | Management Console</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Charts & QR Styling CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" src="js/qr-code-styling.js"></script>
+  <!-- Theme Management Script -->
+  <script src="js/theme.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dashboard-body glow-accent">
+
+  <div class="dashboard-layout">
+    
+    <!-- Glassmorphic Sidebar Navigation -->
+    <aside class="sidebar-wrapper glass-card">
+      <div class="sidebar-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon"><i class="fa-solid fa-qrcode"></i></span>
+          <span class="logo-text">Apstore</span>
+        </a>
+      </div>
+
+      <!-- Current Client Summary profile -->
+      <div class="sidebar-profile">
+        <div class="profile-photo-wrapper" id="user-avatar-badge">U</div>
+        <div class="profile-names-wrap">
+          <h4 id="user-display-name">Client Name</h4>
+          <span class="badge badge-free" id="user-tier-badge">Free Plan</span>
+        </div>
+      </div>
+
+      <!-- Tab Menu Navigation -->
+      <nav class="sidebar-menu">
+        <button class="menu-item active" data-tab="overview">
+          <i class="fa-solid fa-gauge-high"></i> Overview
+        </button>
+        <button class="menu-item" data-tab="my-cards">
+          <i class="fa-solid fa-address-card"></i> My Cards
+        </button>
+        <button class="menu-item" data-tab="builder" id="nav-btn-builder">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Create vCard
+        </button>
+        <button class="menu-item" data-tab="analytics">
+          <i class="fa-solid fa-chart-column"></i> Analytics
+        </button>
+        <button class="menu-item" data-tab="billing" id="nav-btn-billing">
+          <i class="fa-solid fa-wallet"></i> Billing & Plans
+        </button>
+        <button class="menu-item" data-tab="settings">
+          <i class="fa-solid fa-sliders"></i> Settings
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer Action -->
+      <div class="sidebar-footer">
+        <button class="btn-signout" id="btn-dashboard-signout">
+          <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Application Frame -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="content-header">
+        <div class="header-breadcrumbs">
+          <span class="root-breadcrumb">Console</span>
+          <i class="fa-solid fa-chevron-right separator"></i>
+          <span class="active-breadcrumb" id="lbl-breadcrumb">Overview</span>
+        </div>
+
+        <div class="header-actions">
+          <button class="theme-toggle-btn" id="btn-theme-toggle" aria-label="Toggle Theme" style="margin-right: 8px;">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <div class="date-stamp" id="header-date">May 28, 2026</div>
+          <a href="#" class="btn btn-glass btn-upgrade" id="btn-quick-upgrade">
+            <i class="fa-solid fa-bolt"></i> Upgrade to Pro
+          </a>
+        </div>
+      </header>
+
+      <!-- Tab Container Panels -->
+      <div class="tab-panels-wrapper">
+        
+        <!-- --- PANEL 1: OVERVIEW DASHBOARD --- -->
+        <section class="tab-panel active" id="panel-overview">
+          <div class="overview-welcome">
+            <h2>Welcome Back, <span id="welcome-user-name">Client</span>!</h2>
+            <p>Here is your digital network reach and active portfolio configurations for today.</p>
+          </div>
+
+          <!-- Quick Metrics widgets grid -->
+          <div class="metrics-grid">
+            <div class="metric-widget glass-card">
+              <div class="metric-header">
+                <span>Total QR Scans</span>
+                <i class="fa-solid fa-chart-simple icon"></i>
+              </div>
+              <h3 id="stat-total-scans">0</h3>
+              <p class="trend upward"><i class="fa-solid fa-arrow-trend-up"></i> +12% this week</p>
+            </div>
+            
+            <div class="metric-widget glass-card">
+              <div class="metric-header">
+                <span>Active vCards</span>
+                <i class="fa-solid fa-address-book icon"></i>
+              </div>
+              <h3 id="stat-active-cards">0</h3>
+              <p class="card-quota-progress" id="stat-card-quota">Quota: 0 / 2 used</p>
+            </div>
+
+            <div class="metric-widget glass-card">
+              <div class="metric-header">
+                <span>Dynamic QR Links</span>
+                <i class="fa-solid fa-rotate icon"></i>
+              </div>
+              <h3 id="stat-dynamic-qrs">0</h3>
+              <p class="trend info"><i class="fa-solid fa-circle-info"></i> Instant redirection active</p>
+            </div>
+
+            <div class="metric-widget glass-card billing-status-widget">
+              <div class="metric-header">
+                <span>Active Subscription</span>
+                <i class="fa-solid fa-credit-card icon"></i>
+              </div>
+              <h3 id="stat-subscription-type">Free Tier</h3>
+              <p id="stat-billing-info">Basic local hosting features</p>
+            </div>
+          </div>
+
+          <!-- Card list Summary Table -->
+          <div class="summary-table-section glass-card">
+            <div class="table-section-header">
+              <h3>Recent Digital Portfolios</h3>
+              <button class="btn btn-glass btn-sm" id="btn-table-create-new">
+                <i class="fa-solid fa-plus"></i> Create vCard
+              </button>
+            </div>
+            <div class="table-viewport">
+              <table class="summary-table">
+                <thead>
+                  <tr>
+                    <th>Profile Title</th>
+                    <th>Full Name</th>
+                    <th>Type</th>
+                    <th>Scans</th>
+                    <th>Status</th>
+                    <th>Created On</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-table-body">
+                  <!-- Generated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- --- PANEL 2: VCARD CREATOR BUILDER --- -->
+        <section class="tab-panel" id="panel-builder">
+          <div class="builder-layout">
+            
+            <!-- Accordion customization steps form -->
+            <div class="builder-inputs-card glass-card">
+              <div class="builder-header-bar">
+                <h3 id="builder-editor-title">Create Premium QR vCard</h3>
+                <span class="badge badge-pro" id="builder-premium-tag" style="display: none;">Pro styling active</span>
+              </div>
+              
+              <form class="builder-steps-form" id="form-vcard-builder">
+                <!-- Hidden inputs -->
+                <input type="hidden" id="edit-card-id" value="">
+                <input type="hidden" id="card-avatar-base64" value="">
+
+                <!-- STEP 1: Contact Details Accordion -->
+                <div class="form-accordion-step active" data-step="1">
+                  <div class="accordion-header">
+                    <span class="step-num">1</span>
+                    <h4>Contact Details & Information</h4>
+                    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+                  </div>
+                  
+                  <div class="accordion-content">
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Internal Title *</label>
+                        <input type="text" class="form-control" id="vc-title" required value="Corporate Identity" placeholder="e.g. My Digital Card">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">QR Linking Type</label>
+                        <select class="form-control" id="vc-type">
+                          <option value="static">Static (Free, non-editable target link)</option>
+                          <option value="dynamic" selected>Dynamic (Pro, change target details anytime!)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" class="form-control" id="vc-firstname" required placeholder="e.g. John">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" class="form-control" id="vc-lastname" required placeholder="e.g. Doe">
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-control" id="vc-jobtitle" placeholder="e.g. Lead Engineer">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Company / Organization</label>
+                        <input type="text" class="form-control" id="vc-company" placeholder="e.g. Apstore Inc.">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Biography / Description</label>
+                      <textarea class="form-control" id="vc-bio" rows="3" placeholder="Tell contacts about your professional role..."></textarea>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Profile Avatar Image</label>
+                        <div class="file-uploader-box">
+                          <input type="file" id="vc-avatar" accept="image/*" class="file-hidden-input">
+                          <button type="button" class="btn btn-secondary btn-file-dummy" id="btn-avatar-upload">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Select Photo
+                          </button>
+                          <span class="file-name-label" id="lbl-file-name">No file selected</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Personal / Work Website</label>
+                        <input type="text" class="form-control" id="vc-website" placeholder="e.g. www.domain.com">
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Mobile Phone *</label>
+                        <input type="tel" class="form-control" id="vc-phone" required placeholder="e.g. +1 555-019-2834">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Work Number</label>
+                        <input type="tel" class="form-control" id="vc-workphone" placeholder="e.g. +1 555-789-3212">
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Primary Contact Email *</label>
+                        <input type="email" class="form-control" id="vc-email" required placeholder="e.g. name@domain.com">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Office Location Address</label>
+                        <input type="text" class="form-control" id="vc-address" placeholder="e.g. Suite 400, Cupertino, CA">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Social Media handles (Include full profiles URL paths)</label>
+                      <div class="social-inputs-stack">
+                        <div class="social-input-row">
+                          <span class="soc-label lin"><i class="fa-brands fa-linkedin-in"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-linkedin" placeholder="linkedin.com/in/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label git"><i class="fa-brands fa-github"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-github" placeholder="github.com/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label twt"><i class="fa-brands fa-x-twitter"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-twitter" placeholder="twitter.com/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label ins"><i class="fa-brands fa-instagram"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-instagram" placeholder="instagram.com/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label yt" style="background-color: #ff0000;"><i class="fa-brands fa-youtube"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-youtube" placeholder="youtube.com/channel/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label wa" style="background-color: #25d366;"><i class="fa-brands fa-whatsapp"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-whatsapp" placeholder="WhatsApp Phone: e.g. 15550192834">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label fb" style="background-color: #1877f2;"><i class="fa-brands fa-facebook-f"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-facebook" placeholder="facebook.com/username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label tt" style="background-color: #010101; border: 1px solid var(--border-glass); border-right: none;"><i class="fa-brands fa-tiktok"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-tiktok" placeholder="tiktok.com/@username">
+                        </div>
+                        <div class="social-input-row">
+                          <span class="soc-label ds" style="background-color: #5865f2;"><i class="fa-brands fa-discord"></i></span>
+                          <input type="text" class="form-control soc-ctrl" id="vc-soc-discord" placeholder="discord.gg/invite-code or username">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- STEP 2: Theme Settings Accordion -->
+                <div class="form-accordion-step" data-step="2">
+                  <div class="accordion-header">
+                    <span class="step-num">2</span>
+                    <h4>Card Template Theme & Colors</h4>
+                    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+                  </div>
+                  
+                  <div class="accordion-content">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                      <label class="form-label">Pre-Designed Visual Templates</label>
+                      <select class="form-control" id="vc-template-preset">
+                        <option value="custom">— Custom Colors & Layout —</option>
+                        <option value="glass-sunset">🌅 Warm Sunset Glassmorphic</option>
+                        <option value="neo-glow">⚡ Cyberpunk Neon Glow</option>
+                        <option value="executive">👔 Royal Executive Gold</option>
+                        <option value="emerald-eco">🌿 Emerald Forest Eco</option>
+                        <option value="minimalist">⚪ Minimal Stark Slate</option>
+                      </select>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Card Base Background Color</label>
+                        <div class="color-picker-group">
+                          <input type="color" id="vc-theme-bg" value="#6366f1" class="color-dot-picker">
+                          <span id="lbl-theme-bg-hex" class="hex-text">#6366f1</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Accent / Highlights Color</label>
+                        <div class="color-picker-group">
+                          <input type="color" id="vc-theme-primary" value="#a855f7" class="color-dot-picker">
+                          <span id="lbl-theme-primary-hex" class="hex-text">#A855F7</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Touch Actions Button Shape</label>
+                        <div class="btn-shape-selector">
+                          <label class="shape-opt">
+                            <input type="radio" name="vc-shape" value="square" class="hidden-radio">
+                            <span class="shape-visual square">Square</span>
+                          </label>
+                          <label class="shape-opt">
+                            <input type="radio" name="vc-shape" value="rounded" class="hidden-radio">
+                            <span class="shape-visual rounded">Rounded</span>
+                          </label>
+                          <label class="shape-opt">
+                            <input type="radio" name="vc-shape" value="pill" checked class="hidden-radio">
+                            <span class="shape-visual pill">Pill</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Display Aesthetics Theme</label>
+                        <div class="theme-mode-selector">
+                          <label class="mode-opt">
+                            <input type="radio" name="vc-theme-mode" value="dark" checked class="hidden-radio">
+                            <span class="mode-visual dark"><i class="fa-solid fa-moon"></i> Dark Theme</span>
+                          </label>
+                          <label class="mode-opt">
+                            <input type="radio" name="vc-theme-mode" value="light" class="hidden-radio">
+                            <span class="mode-visual light"><i class="fa-solid fa-sun"></i> Light Theme</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 3: QR Customization Accordion -->
+                <div class="form-accordion-step" data-step="3">
+                  <div class="accordion-header">
+                    <span class="step-num">3</span>
+                    <h4>QR Design & Vector Customizations</h4>
+                    <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+                  </div>
+                  
+                  <div class="accordion-content">
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">QR Primary Dots Color</label>
+                        <div class="color-picker-group">
+                          <input type="color" id="vc-qr-dots" value="#6366f1" class="color-dot-picker">
+                          <span id="lbl-qr-dots-hex" class="hex-text">#6366F1</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">QR Corner Borders Color</label>
+                        <div class="color-picker-group">
+                          <input type="color" id="vc-qr-corners" value="#a855f7" class="color-dot-picker">
+                          <span id="lbl-qr-corners-hex" class="hex-text">#A855F7</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-row-2">
+                      <div class="form-group">
+                        <label class="form-label">Vector Dots Style Pattern</label>
+                        <select class="form-control" id="vc-qr-dots-type">
+                          <option value="square">Standard Square</option>
+                          <option value="rounded" selected>Rounded Curves</option>
+                          <option value="extra-rounded">Extra Circular</option>
+                          <option value="classy">Classy Diamonds</option>
+                          <option value="dots">Modern Dots</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">QR Corner Eyes Style</label>
+                        <select class="form-control" id="vc-qr-corners-type">
+                          <option value="square">Standard Square</option>
+                          <option value="rounded" selected>Rounded Loops</option>
+                          <option value="dot">Inner Circular dot</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Center Branding Logo Preset</label>
+                      <select class="form-control" id="vc-qr-logo">
+                        <option value="none">No Center Logo</option>
+                        <option value="vcard">Standard Digital Card Icon</option>
+                        <option value="avatar">Profile Avatar Photo (Base64)</option>
+                      </select>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Submit buttons -->
+                <div class="builder-actions-buttons">
+                  <button type="button" class="btn btn-secondary" id="btn-builder-reset">Reset Fields</button>
+                  <button type="submit" class="btn btn-primary" id="btn-builder-submit">
+                    Save Profile & Generate QR <i class="fa-solid fa-qrcode" style="margin-left: 4px;"></i>
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+            <!-- Sticky Live Dashboard Mobile Preview -->
+            <div class="builder-previews-sidebar">
+              <div class="sticky-preview-wrapper glass-card">
+                
+                <div class="preview-tabs">
+                  <button class="preview-tab active" data-prev="phone">Mobile Preview</button>
+                  <button class="preview-tab" data-prev="qr">QR Code</button>
+                </div>
+
+                <!-- Mobile preview Frame wrapper -->
+                <div class="preview-viewport active" id="viewport-phone">
+                  <div class="iphone-frame">
+                    <div class="iphone-camera-notch"></div>
+                    <div class="iphone-speaker"></div>
+                    <div class="iphone-screen">
+                      
+                      <!-- Real-time public card preview inside phone mock -->
+                      <div class="mock-phone-vcard theme-dark btn-pill" id="live-phone-card">
+                        
+                        <div class="live-avatar-wrapper" id="live-avatar-box">AS</div>
+                        <h2 class="live-name-text" id="live-fullname">Your Name</h2>
+                        <span class="live-title-text" id="live-jobtitle">Your Profession</span>
+                        <span class="live-comp-badge" id="live-company">Your Organization</span>
+                        
+                        <div class="live-bio-box" id="live-bio">Your professional statements will display inside this frosted-glass panel.</div>
+                        
+                        <div class="live-buttons-grid">
+                          <div class="live-btn"><i class="fa-solid fa-phone"></i><span>Call</span></div>
+                          <div class="live-btn"><i class="fa-solid fa-envelope"></i><span>Email</span></div>
+                          <div class="live-btn"><i class="fa-solid fa-globe"></i><span>Web</span></div>
+                        </div>
+
+                        <div class="live-save-btn">Save to Contacts</div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Interactive QR preview wrapper -->
+                <div class="preview-viewport" id="viewport-qr">
+                  <div class="qr-preview-box">
+                    <div class="qr-render-canvas" id="live-qr-canvas">
+                      <!-- Rendered dynamically by QRCodeStyling -->
+                    </div>
+                    <div class="qr-render-actions">
+                      <span class="qr-scan-tips"><i class="fa-solid fa-circle-info"></i> Instantly updates!</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- --- PANEL 3: MY CARDS GRID STORAGE --- -->
+        <section class="tab-panel" id="panel-cards">
+          <div class="my-cards-header-bar">
+            <!-- Search & Filters -->
+            <div class="filter-controls">
+              <input type="text" class="form-control filter-search" id="card-search-input" placeholder="Search cards by name or company...">
+              <select class="form-control filter-select" id="card-filter-type">
+                <option value="all">All QR Types</option>
+                <option value="static">Static Links</option>
+                <option value="dynamic">Dynamic Links</option>
+              </select>
+            </div>
+            
+            <button class="btn btn-primary" id="btn-cards-panel-create">
+              <i class="fa-solid fa-plus"></i> Create vCard
+            </button>
+          </div>
+
+          <!-- Cards grid container -->
+          <div class="cards-grid" id="cards-grid-viewport">
+            <!-- Filled dynamically by js -->
+          </div>
+        </section>
+
+        <!-- --- PANEL 4: DEEP DIVE ANALYTICS --- -->
+        <section class="tab-panel" id="panel-analytics">
+          <div class="analytics-filter-header glass-card">
+            <div class="desc">
+              <h3>Scan Metrics Dashboard</h3>
+              <p>Filter scans, devices used, and geolocations of visitors in real-time.</p>
+            </div>
+            <div class="selector">
+              <label class="form-label">Active Portfolio Target</label>
+              <select class="form-control" id="analytics-card-selector" style="min-width: 220px;">
+                <option value="all">Aggregate Data (All Cards)</option>
+                <!-- populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Analytical Charts matrix -->
+          <div class="analytics-charts-grid">
+            
+            <!-- Chart 1: Timeline line chart -->
+            <div class="chart-container-widget glass-card timeline-card">
+              <div class="widget-header">
+                <h3>Total Scan Timelines</h3>
+                <span class="badge badge-free">Last 30 Days</span>
+              </div>
+              <div class="chart-canvas-wrapper">
+                <canvas id="chart-timeline"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: OS Pie chart -->
+            <div class="chart-container-widget glass-card">
+              <div class="widget-header">
+                <h3>Scanners Device Systems</h3>
+                <span class="badge badge-free">Platform Breakdowns</span>
+              </div>
+              <div class="chart-canvas-wrapper small-chart">
+                <canvas id="chart-devices"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 3: Geo location bar chart -->
+            <div class="chart-container-widget glass-card">
+              <div class="widget-header">
+                <h3>Geographic Scan Centers</h3>
+                <span class="badge badge-free">Visitor Demographics</span>
+              </div>
+              <div class="chart-canvas-wrapper small-chart">
+                <canvas id="chart-locations"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- --- PANEL 5: BILLING & STRIPE UPGRADES --- -->
+        <section class="tab-panel" id="panel-billing">
+          
+          <div class="billing-hero-grid">
+            <!-- Quota status panel -->
+            <div class="billing-quota-card glass-card">
+              <h3>Subscription Overview</h3>
+              <div class="current-plan-summary">
+                <span class="plan-label">Active tier:</span>
+                <span class="plan-badge badge badge-free" id="bill-active-badge">Free Plan</span>
+              </div>
+              
+              <div class="quota-meter-wrapper">
+                <div class="meter-labels">
+                  <span>Created vCards Quota</span>
+                  <span id="bill-quota-numbers">0 / 2 cards used</span>
+                </div>
+                <div class="meter-bar">
+                  <div class="meter-fill" id="bill-quota-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <div class="quota-meter-wrapper" style="margin-top: 16px;">
+                <div class="meter-labels">
+                  <span>Monthly Scanning Quota</span>
+                  <span id="bill-scans-numbers">Unlimited Scans</span>
+                </div>
+                <div class="meter-bar">
+                  <div class="meter-fill success" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <p class="bill-terms" id="bill-cycle-terms">Basic local storage sandbox database active.</p>
+            </div>
+
+            <!-- Dynamic Comparison Cards list -->
+            <div class="billing-tiers-list">
+              <!-- Tier Pro -->
+              <div class="bill-tier-row glass-card" id="row-tier-pro">
+                <div class="tier-identity">
+                  <span class="badge badge-pro">Recommended</span>
+                  <h4>Professional Plan</h4>
+                  <p>Up to 10 Dynamic vCards, gradient stylings, no branding, and detailed tracking charts.</p>
+                </div>
+                <div class="tier-pricing-action">
+                  <div class="price">
+                    <span>$9</span><small>/mo</small>
+                  </div>
+                  <button class="btn btn-primary btn-upgrade-trigger" data-tier="pro">Upgrade Now</button>
+                </div>
+              </div>
+
+              <!-- Tier Enterprise -->
+              <div class="bill-tier-row glass-card" id="row-tier-enterprise">
+                <div class="tier-identity">
+                  <span class="badge badge-enterprise">Scaling Teams</span>
+                  <h4>Enterprise Plan</h4>
+                  <p>Unlimited cards, enterprise visual components, custom domains, and dedicated setups.</p>
+                </div>
+                <div class="tier-pricing-action">
+                  <div class="price">
+                    <span>$29</span><small>/mo</small>
+                  </div>
+                  <button class="btn btn-secondary btn-upgrade-trigger" data-tier="enterprise">Select Enterprise</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- --- PANEL 6: ACCOUNT SETTINGS --- -->
+        <section class="tab-panel" id="panel-settings">
+          <div class="settings-grid">
+            
+            <div class="settings-form-card glass-card">
+              <h3>Profile Settings</h3>
+              <p class="subtitle">Modify account details and reset client credentials.</p>
+              
+              <form id="form-settings-profile" style="margin-top: 24px;">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="set-fullname" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address (Non-editable, system linked)</label>
+                  <input type="email" class="form-control" id="set-email" readonly disabled style="opacity: 0.6;">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">New Password (Leave blank to keep current)</label>
+                  <input type="password" class="form-control" id="set-password" placeholder="Min 6 characters">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Save Profile Details</button>
+              </form>
+            </div>
+
+            <div class="settings-form-card glass-card data-management-card">
+              <h3>Database Management</h3>
+              <p class="subtitle">Export or reset your client application local directories.</p>
+              
+              <div class="settings-options-stack" style="margin-top: 32px; display: flex; flex-direction: column; gap: 20px;">
+                <div class="settings-option-item">
+                  <div class="desc">
+                    <h4>Export Card Data</h4>
+                    <p>Compile a local backup of your customized vCard structures in JSON format.</p>
+                  </div>
+                  <button class="btn btn-secondary" id="btn-export-json"><i class="fa-solid fa-file-export"></i> Export JSON</button>
+                </div>
+                
+                <div class="settings-option-item danger-row" style="border-top: 1px solid var(--border-glass); padding-top: 20px;">
+                  <div class="desc">
+                    <h4>Reset System Storage</h4>
+                    <p>Wipe all created vCards, credentials, and scan timelines permanently.</p>
+                  </div>
+                  <button class="btn btn-glass" id="btn-reset-db" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #f87171;"><i class="fa-solid fa-trash-can"></i> WIPE STORAGE</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- --- STRIPE CHEKOUT VISUAL CREDIT CARD MODAL --- -->
+  <div class="stripe-checkout-overlay" id="checkout-modal">
+    <div class="stripe-card glass-card">
+      <button class="btn-checkout-close" id="btn-close-checkout"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="checkout-grid">
+        <!-- Visual Interactive card display details -->
+        <div class="visual-cc-frame">
+          <div class="visual-cc" id="interactive-card">
+            <!-- Front side -->
+            <div class="cc-side cc-front">
+              <div class="cc-glow-orb"></div>
+              <div class="cc-header">
+                <i class="fa-solid fa-qrcode chip-icon"></i>
+                <div class="cc-brand-logo" id="cc-logo-display"><i class="fa-brands fa-cc-visa"></i></div>
+              </div>
+              <div class="cc-number" id="cc-num-display">•••• •••• •••• ••••</div>
+              <div class="cc-footer">
+                <div class="cc-holder-wrap">
+                  <span class="cc-label">Card Holder</span>
+                  <div class="cc-value" id="cc-holder-display">CLIENT NAME</div>
+                </div>
+                <div class="cc-expiry-wrap">
+                  <span class="cc-label">Expires</span>
+                  <div class="cc-value" id="cc-expiry-display">MM/YY</div>
+                </div>
+              </div>
+            </div>
+            <!-- Back side -->
+            <div class="cc-side cc-back">
+              <div class="cc-mag-strip"></div>
+              <div class="cc-cvv-section">
+                <span class="cc-label">CVV</span>
+                <div class="cc-cvv-box" id="cc-cvv-display">•••</div>
+              </div>
+              <div class="cc-back-branding">Apstore Premium Billing Gateway</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkout forms details -->
+        <div class="cc-checkout-form-panel">
+          <div class="checkout-summary-box">
+            <h3>Subscribe to <span class="text-gradient" id="checkout-plan-name">Pro Plan</span></h3>
+            <div class="price-line">
+              <span id="checkout-plan-amount">$9</span><small>/month</small>
+            </div>
+          </div>
+
+          <form id="form-stripe-payment" style="margin-top: 16px; display: flex; flex-direction: column; gap: 16px;">
+            <input type="hidden" id="checkout-tier-target" value="pro">
+
+            <div class="form-group">
+              <label class="form-label">Cardholder Name</label>
+              <input type="text" class="form-control" id="pay-name" required placeholder="e.g. John Doe">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Credit Card Number</label>
+              <div class="cc-input-wrap">
+                <input type="text" class="form-control" id="pay-number" required maxlength="19" placeholder="4111 2222 3333 4444">
+                <span class="cc-icon-tag" id="cc-provider-icon"><i class="fa-solid fa-credit-card"></i></span>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">Expiration Date</label>
+                <input type="text" class="form-control" id="pay-expiry" required maxlength="5" placeholder="MM/YY">
+              </div>
+              <div class="form-group">
+                <label class="form-label">CVV Code</label>
+                <input type="password" class="form-control" id="pay-cvv" required maxlength="4" placeholder="•••">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-pay-submit" style="width: 100%; margin-top: 8px;">
+              Authorize Transaction <i class="fa-solid fa-shield-halved" style="margin-left: 4px;"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popover download details block -->
+  <div class="download-popover-overlay" id="download-popover">
+    <div class="download-card glass-card">
+      <button class="btn-popover-close" id="btn-close-popover"><i class="fa-solid fa-xmark"></i></button>
+      <h3>Download QR Profile</h3>
+      <p class="subtitle">Choose vector/image resolutions for print or embeds.</p>
+      
+      <div id="popover-qr-display" class="qr-popover-preview">
+        <!-- Loaded by script -->
+      </div>
+      
+      <div class="download-options-stack">
+        <button class="btn btn-primary download-action-btn" data-format="png">
+          Download as PNG <i class="fa-solid fa-file-image"></i>
+        </button>
+        <button class="btn btn-glass download-action-btn" data-format="svg">
+          Download as SVG <i class="fa-solid fa-file-vector"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Bin container -->
+  <div class="toast-container" id="dashboard-toast-bin"></div>
+
+  <!-- DB and Auth Core scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  
+  <!-- Dashboard interactions script -->
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

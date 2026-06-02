@@ -86,7 +86,7 @@ const Auth = {
   // Route security gate
   guardRoute() {
     const currentUser = this.getCurrentUser();
-    const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname.toLowerCase();
     const isDashboard = currentPath.includes('dashboard.html');
 
     if (isDashboard && !currentUser) {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apstore | Digital Card Profile</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/vcard.css">
+</head>
+<body class="vcard-body">
+  
+  <!-- Background Glow Orbs -->
+  <div class="glow-orb orb-1" id="theme-orb-1"></div>
+  <div class="glow-orb orb-2" id="theme-orb-2"></div>
+
+  <!-- Main Card Container -->
+  <div class="vcard-container" id="vcard-main">
+    
+    <!-- Profile Card Header -->
+    <header class="vcard-header">
+      <div class="avatar-wrapper" id="profile-avatar-container">
+        <!-- Loaded dynamically -->
+        <div class="avatar-placeholder" id="avatar-initials">AS</div>
+      </div>
+      
+      <h1 class="vcard-name" id="profile-fullname">Loading Profile...</h1>
+      <p class="vcard-title" id="profile-jobtitle">Connecting Details</p>
+      <span class="vcard-company" id="profile-company">Apstore Network</span>
+    </header>
+
+    <!-- Bio Statement -->
+    <div class="vcard-section vcard-bio-section" id="profile-bio-container">
+      <p class="vcard-bio" id="profile-bio">
+        Fetching secure, cloud-saved dynamic vCard credentials...
+      </p>
+    </div>
+
+    <!-- Quick Action Contact Buttons -->
+    <div class="vcard-section">
+      <h3 class="section-title">Quick Actions</h3>
+      <div class="actions-grid" id="quick-actions-grid">
+        <!-- Call -->
+        <a href="#" class="action-btn" id="btn-call">
+          <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+          <span>Call Mobile</span>
+        </a>
+        <!-- Message/WhatsApp -->
+        <a href="#" class="action-btn" id="btn-work-phone">
+          <div class="icon-box"><i class="fa-solid fa-briefcase"></i></div>
+          <span>Work Phone</span>
+        </a>
+        <!-- Email -->
+        <a href="#" class="action-btn" id="btn-email">
+          <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+          <span>Email Me</span>
+        </a>
+        <!-- Website -->
+        <a href="#" class="action-btn" id="btn-website" target="_blank">
+          <div class="icon-box"><i class="fa-solid fa-globe"></i></div>
+          <span>Visit Website</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Address Location Block -->
+    <div class="vcard-section" id="address-container" style="display: none;">
+      <h3 class="section-title">Location</h3>
+      <a href="#" class="location-card" id="btn-address" target="_blank">
+        <i class="fa-solid fa-location-dot"></i>
+        <div class="location-details">
+          <span class="location-title">Office Address</span>
+          <p class="location-text" id="profile-address">Cupertino, CA, USA</p>
+        </div>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+      </a>
+    </div>
+
+    <!-- Social Media Connections -->
+    <div class="vcard-section" id="socials-container">
+      <h3 class="section-title">Social Networks</h3>
+      <div class="socials-list" id="social-links-list">
+        <!-- Generated Dynamically -->
+      </div>
+    </div>
+
+    <!-- Floating Contact Card Exporter (VCF) -->
+    <div class="floating-save-container">
+      <button class="btn btn-primary btn-save-contact" id="btn-save-vcf">
+        <i class="fa-solid fa-user-plus"></i>
+        Save to Contacts
+      </button>
+    </div>
+
+    <!-- Powered by Branding banner -->
+    <footer class="vcard-footer" id="branding-banner">
+      <a href="index.html" class="branding-link">
+        <span>Powered by</span>
+        <span class="brand-text">Apstore</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <!-- Alert notification inside vCard for missing details -->
+  <div id="vcard-toast" class="vcard-toast">Contact Saved!</div>
+
+  <!-- DB and Application logic -->
+  <script src="js/db.js"></script>
+  <script src="js/vcard-viewer.js"></script>
+</body>
+</html>
