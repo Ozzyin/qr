@@ -194,7 +194,7 @@ function renderOverviewDashboard(user) {
       <td>
         <div class="row-actions-group">
           <button class="btn btn-secondary btn-sm btn-action-edit" data-id="${c.id}"><i class="fa-solid fa-pencil"></i></button>
-          <a href="view.html?id=${c.id}" target="_blank" class="btn btn-glass btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          <a href="view.html?id=${c.id}&d=${DB.encodeCardForUrl(c)}" target="_blank" class="btn btn-glass btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>
       </td>
     `;
@@ -810,8 +810,10 @@ function renderCardsGrid(user, searchQuery = "", typeFilter = "all") {
   grid.querySelectorAll('.copy-link-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const cardId = btn.getAttribute('data-id');
+      const card = DB.getCardById(cardId);
+      const encodedPayload = DB.encodeCardForUrl(card);
       const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-      const shareUrl = window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}`;
+      const shareUrl = window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}&d=${encodedPayload}`;
       
       navigator.clipboard.writeText(shareUrl)
         .then(() => {
@@ -853,12 +855,13 @@ function openQRDownloadPopover(userId, cardId) {
   previewDiv.innerHTML = '';
 
   // Render canvas QR
+  const encodedPayload = DB.encodeCardForUrl(card);
   const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
   popoverQR = new QRCodeStyling({
     width: 150,
     height: 150,
     type: "canvas",
-    data: window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}`,
+    data: window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}&d=${encodedPayload}`,
     dotsOptions: {
       color: card.qrStyle?.dotsColor || "#6366f1",
       type: card.qrStyle?.dotsType || "rounded"

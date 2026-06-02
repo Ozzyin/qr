@@ -11,7 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Load card details from simulated DB
-  const card = DB.getCardById(cardId);
+  let card = DB.getCardById(cardId);
+  if (!card) {
+    const encodedData = urlParams.get('d');
+    if (encodedData) {
+      const decodedCard = DB.decodeCardFromUrl(encodedData);
+      if (decodedCard) {
+        card = decodedCard;
+        // Backfill to local storage for persistent browser access
+        const existing = DB.getCards();
+        if (!existing.find(c => c.id === card.id)) {
+          existing.push(card);
+          DB.saveCards(existing);
+        }
+      }
+    }
+  }
+
   if (!card) {
     renderError("Digital Profile Not Found", "The profile link you followed might have been paused, deleted, or is temporarily unavailable.");
     return;

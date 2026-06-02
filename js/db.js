@@ -139,6 +139,48 @@ const DB = {
     return this.getCards().find(c => c.id === id) || null;
   },
 
+  encodeCardForUrl(card) {
+    if (!card) return '';
+    // Strip large base64 avatar to keep URL size optimal for QR scannability
+    const stripped = {
+      id: card.id,
+      userId: card.userId,
+      title: card.title,
+      type: card.type,
+      firstName: card.firstName,
+      lastName: card.lastName,
+      jobTitle: card.jobTitle,
+      company: card.company,
+      description: card.description,
+      phone: card.phone,
+      workPhone: card.workPhone,
+      email: card.email,
+      website: card.website,
+      address: card.address,
+      socials: card.socials,
+      theme: card.theme,
+      qrStyle: card.qrStyle
+    };
+    try {
+      const json = JSON.stringify(stripped);
+      return btoa(encodeURIComponent(json));
+    } catch (e) {
+      console.error("Failed to encode card for URL:", e);
+      return '';
+    }
+  },
+
+  decodeCardFromUrl(encoded) {
+    if (!encoded) return null;
+    try {
+      const json = decodeURIComponent(atob(encoded));
+      return JSON.parse(json);
+    } catch (e) {
+      console.error("Failed to decode card from URL:", e);
+      return null;
+    }
+  },
+
   getCardsByUserId(userId) {
     return this.getCards().filter(c => c.userId === userId);
   },
