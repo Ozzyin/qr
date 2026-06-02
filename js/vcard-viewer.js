@@ -10,22 +10,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Load card details from simulated DB
-  let card = DB.getCardById(cardId);
-  if (!card) {
-    const encodedData = urlParams.get('d');
-    if (encodedData) {
-      const decodedCard = DB.decodeCardFromUrl(encodedData);
-      if (decodedCard) {
-        card = decodedCard;
-        // Backfill to local storage for persistent browser access
-        const existing = DB.getCards();
-        if (!existing.find(c => c.id === card.id)) {
-          existing.push(card);
-          DB.saveCards(existing);
-        }
+  // Check if we have dynamic URL data payload
+  const encodedData = urlParams.get('d');
+  let card = null;
+
+  if (encodedData) {
+    const decodedCard = DB.decodeCardFromUrl(encodedData);
+    if (decodedCard) {
+      card = decodedCard;
+      // Overwrite/update local storage database to bypass stale caches
+      const existing = DB.getCards();
+      const idx = existing.findIndex(c => c.id === card.id);
+      if (idx !== -1) {
+        existing[idx] = card;
+      } else {
+        existing.push(card);
       }
+      DB.saveCards(existing);
     }
+  }
+
+  // Fallback to local storage if no URL payload is present
+  if (!card) {
+    card = DB.getCardById(cardId);
   }
 
   if (!card) {
