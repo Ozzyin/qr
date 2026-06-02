@@ -809,6 +809,7 @@ function renderCardsGrid(user, searchQuery = "", typeFilter = "all") {
   // Copy Sharing link
   grid.querySelectorAll('.copy-link-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      const cardId = btn.getAttribute('data-id');
       const dirPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
       const shareUrl = window.location.protocol + '//' + window.location.host + dirPath + `view.html?id=${cardId}`;
       

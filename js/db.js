@@ -122,7 +122,13 @@ const DB = {
 
   // --- CARD OPERATIONS ---
   getCards() {
-    return JSON.parse(localStorage.getItem(this.KEYS.CARDS)) || [];
+    try {
+      return JSON.parse(localStorage.getItem(this.KEYS.CARDS)) || [];
+    } catch (e) {
+      console.error("Failed to parse cards from storage, resetting:", e);
+      localStorage.setItem(this.KEYS.CARDS, JSON.stringify([]));
+      return [];
+    }
   },
 
   saveCards(cards) {
@@ -285,7 +291,13 @@ const DB = {
 
   // --- ANALYTICS & SCANS ---
   getAnalytics() {
-    return JSON.parse(localStorage.getItem(this.KEYS.ANALYTICS)) || [];
+    try {
+      return JSON.parse(localStorage.getItem(this.KEYS.ANALYTICS)) || [];
+    } catch (e) {
+      console.error("Failed to parse analytics from storage, resetting:", e);
+      localStorage.setItem(this.KEYS.ANALYTICS, JSON.stringify([]));
+      return [];
+    }
   },
 
   saveAnalytics(analytics) {
